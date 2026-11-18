@@ -1,5 +1,5 @@
 import './logo-trim.js';
-import { foodOptionsHtml } from './food-options.js';
+import { foodOptionsHtml, QUORN_NOTE, hasQuorn } from './food-options.js';
 
 const $ = s => document.querySelector(s);
 const esc = str => String(str ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]));
@@ -58,7 +58,7 @@ form.addEventListener('submit', async ev => {
         <div><dt>Booking reference</dt><dd><strong>${esc(data.reference)}</strong></dd></div>
         <div><dt>Date</dt><dd>${esc(fmtDate(eduhub.date))}</dd></div>
         <div><dt>Leading</dt><dd>${esc(body.leading)}</dd></div>
-        ${food ? `<div><dt>Lunch</dt><dd>${esc(food)}</dd></div>` : ''}
+        ${food ? `<div><dt>Lunch</dt><dd>${esc(food)}${hasQuorn(food) ? `<span class="quorn-small">${esc(QUORN_NOTE)}</span>` : ''}</dd></div>` : ''}
       </dl>
       ${data.ticketUrl ? `<div class="ticket-inline"><h3>Your ticket</h3>
         <img class="ticket-qr" src="/api/qr?${esc(data.ticketUrl.split('?')[1] || '')}" width="200" height="200" alt="QR code for your booking">

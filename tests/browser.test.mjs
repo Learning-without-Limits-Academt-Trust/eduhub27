@@ -102,6 +102,10 @@ await step("admin preview shows the menu with allergens and never submits", asyn
   preview.on("pageerror", e => errors.push(e.message));
   await preview.goto(BASE + "/eduhub/?preview=1");
   await preview.waitForSelector(".food-option");
+  // Quorn meals carry the free-of-charge note.
+  assert.match(await preview.textContent("#food-options .quorn-note"), /supplied locally and free of charge/);
+  assert.equal(await preview.locator(".food-option", { hasText: "Quorn Sausage Casserole" }).locator(".quorn-tag").count(), 1);
+  assert.equal(await preview.locator(".food-option", { hasText: "Tuna Mayo Sandwich" }).locator(".quorn-tag").count(), 0);
   assert.equal(await preview.locator(".food-option").count(), 10);
   // Allergen matrix link sits directly beneath the food options.
   const next = await preview.evaluate(() => document.querySelector("#food-options").nextElementSibling.querySelector("a").getAttribute("href"));

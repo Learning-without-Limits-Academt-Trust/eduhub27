@@ -69,6 +69,8 @@ export async function sendMail({ to, subject, html, text, inlinePng }){
 }
 
 // ---------- Confirmation email ----------
+// Keep in step with QUORN_NOTE in public/assets/food-options.js.
+const QUORN_NOTE = "The Quorn in our meals has been supplied locally and free of charge. We are very grateful for this generous support.";
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
 const fmtDate = v => v ? new Intl.DateTimeFormat("en-GB", { dateStyle: "full", timeZone: "Europe/London" }).format(new Date(v + "T12:00:00Z")).replace(",", "") : "";
 const row = (label, value) => value ? `<tr><td style="padding:6px 12px 6px 0;color:#586d70;vertical-align:top;white-space:nowrap">${esc(label)}</td><td style="padding:6px 0;vertical-align:top">${value}</td></tr>` : "";
@@ -79,7 +81,7 @@ function eventFacts(b, eduhub, course){
       ["Date", esc(fmtDate(eduhub.date))], ["Time", esc(eduhub.time)], ["Venue", esc(eduhub.venue)],
       [b.role === "speaker" ? "Leading" : "School or team", esc(b.role === "speaker" ? b.leading : b.organisation)],
       ["Sessions", (b.sessions || []).map(s => `${esc(s.time)}: ${esc(s.title)}${s.room ? `, ${esc(s.room)}` : ""}`).join("<br>")],
-      ["Food choice", esc(b.foodChoice)]
+      ["Food choice", b.foodChoice ? `${esc(b.foodChoice)}${/quorn/i.test(b.foodChoice) ? `<br><span style="font-size:13px;color:#586d70">${esc(QUORN_NOTE)}</span>` : ""}` : ""]
     ];
   }
   const sessions = Array.isArray(course?.sessions) && course.sessions.length ? course.sessions : [{ date: course?.date, time: course?.time }];

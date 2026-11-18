@@ -618,6 +618,15 @@ await test("repeated wrong passwords lead to a temporary lockout", async () => {
   assert.equal((await call("login", { method: "POST", body: { password: "local-admin-password" } })).status, 429);
 });
 
+await test("the Quorn note appears in confirmation emails for Quorn meals only", async () => {
+  const t = await import("../netlify/functions/_tickets.mjs");
+  const e = { date: "2027-01-05", venue: "Babington Academy" };
+  const quorn = t.confirmationEmail({ itemId: "eduhub-2027", firstName: "A", reference: "R1", foodChoice: "Quorn Sausage Casserole" }, { eduhub: e, url: "" }).html;
+  assert.match(quorn, /supplied locally and free of charge/);
+  const tuna = t.confirmationEmail({ itemId: "eduhub-2027", firstName: "A", reference: "R2", foodChoice: "Tuna Mayo Sandwich" }, { eduhub: e, url: "" }).html;
+  assert.doesNotMatch(tuna, /free of charge/);
+});
+
 server.kill(); msMock.close();
 console.log(`\n${passed} passed, ${failed} failed`);
 process.exit(failed ? 1 : 0);

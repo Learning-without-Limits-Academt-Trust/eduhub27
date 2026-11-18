@@ -1,5 +1,14 @@
 # Changelog
 
+## Version 6.1: Quorn supplied free of charge
+
+### New
+- Wherever a food choice contains Quorn, the site says so: "The Quorn in our meals has been supplied locally and free of charge. We are very grateful for this generous support."
+  - On the staff booking form and the speaker lunch form, the note sits above the group of meals that includes Quorn, and each Quorn meal carries a "Quorn supplied free of charge" tag.
+  - The speaker lunch page shows the note in its introduction.
+  - Confirmation screens and confirmation emails show it under the food choice when a Quorn meal was chosen.
+- The wording is set in `public/assets/food-options.js` (QUORN_NOTE) and, for emails, in `netlify/functions/_tickets.mjs`.
+
 ## Version 6.0: the immersive redesign
 
 Follows "LwLAT Pulse homepage: Concept C" and the house site-thumbnail style.

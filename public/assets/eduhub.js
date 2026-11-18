@@ -1,5 +1,5 @@
 import './logo-trim.js';
-import { foodOptionsHtml } from './food-options.js';
+import { foodOptionsHtml, QUORN_NOTE, hasQuorn } from './food-options.js';
 import { celebrate } from './celebrate.js';
 
 const $ = s => document.querySelector(s);
@@ -507,7 +507,7 @@ function showConfirmation(data, body){
       <div><dt>Email</dt><dd>${esc(body.email)}</dd></div>
       <div><dt>Date</dt><dd>${fmtDate(eduhub.date)}${eduhub.time ? `, ${esc(eduhub.time)}` : ''}</dd></div>
       ${body.sessionIds.length ? `<div><dt>Workshops</dt><dd>${body.sessionIds.map(id => (eduhub.sessions || []).find(x => x.id === id)).filter(Boolean).map(x => `${esc(slotLabel(x))}: ${esc(x.title)}${x.room ? `, ${esc(x.room)}` : ''}`).join('<br>')}</dd></div>` : ''}
-      ${food ? `<div><dt>Food choice</dt><dd>${esc(food)}</dd></div>` : ''}
+      ${food ? `<div><dt>Food choice</dt><dd>${esc(food)}${hasQuorn(food) ? `<span class="quorn-small">${esc(QUORN_NOTE)}</span>` : ''}</dd></div>` : ''}
     </dl>
     ${data.ticketUrl ? `<div class="ticket-inline"><h3>Your ticket</h3>
       <img class="ticket-qr" src="/api/qr?${esc(data.ticketUrl.split('?')[1] || '')}" width="220" height="220" alt="QR code for your booking">

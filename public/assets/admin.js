@@ -741,11 +741,19 @@ pf.addEventListener('submit',async e=>{
   const btn=pf.querySelector('button[type=submit]');btn.disabled=true;
   try{
     await api('eduhub',{method:'POST',body:JSON.stringify({section:'programme',keynote:readKeynote(),agenda:readAgenda(),showAgenda:pf.elements.showAgenda.checked,rounds,workshops:workshops.filter(x=>x.title),schools:readSchools(),requireSessionChoice:pf.elements.requireSessionChoice.checked})});
-    programmeDirty=false;await refresh({keepProgrammeForm:false});message('Sessions saved.');
+    programmeDirty=false;await refresh({keepProgrammeForm:false});message((data.eduhub.clashes||[]).length?'Sessions saved, but the timetable has a clash. See the warning under Workshop numbers.':'Sessions saved. No timetable clashes.',(data.eduhub.clashes||[]).length?'notice error':undefined);
   }catch(err){message(`Sessions were not saved: ${err.message}`,'notice error')}
   finally{btn.disabled=false}
 });
+// Warns when any group would be in two places at once on the day.
+function renderClashes(){
+  const clashes=data.eduhub.clashes||[];
+  const name=p=>(PHASES.find(y=>y[0]===p)||[])[1]||p;
+  const when=a=>`${a.startTime||''}${a.endTime?` to ${a.endTime}`:''}`;
+  $('#clash-warning').innerHTML=clashes.length?`<div class="notice error"><p><strong>Timetable clash.</strong> Some people would be in two places at once. Please change the times, the groups ticked under "For", or the groups in each round, then save.</p><ul>${clashes.map(c=>`<li>${escapeHtml(name(c.phase))} staff: ${escapeHtml(c.first.title)} (${escapeHtml(when(c.first))}) overlaps ${escapeHtml(c.second.title)} (${escapeHtml(when(c.second))})</li>`).join('')}</ul></div>`:'';
+}
 function renderSessionSummary(){
+  renderClashes();
   const sessions=data.eduhub.sessions||[];
   if(!sessions.length){$('#session-summary').innerHTML='<p class="muted">No workshops yet.</p>';return}
   const count=id=>data.bookings.filter(b=>b.itemId===EDUHUB_ID&&statusOf(b)==='booked'&&(b.sessionIds||[]).includes(id)).length;

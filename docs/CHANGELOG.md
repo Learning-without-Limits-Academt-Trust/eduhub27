@@ -1,5 +1,15 @@
 # Changelog
 
+## Version 6.2: no timetable clashes
+
+### Fixed
+- **Central staff and trustees were shown two things at once.** On the live site the workshop rounds place central staff with primary staff (Session 1 at 11:20, Session 2 at 12:10), but the structure of the day still placed them with secondary staff. Their timetable therefore showed the People Strategy launch at 11:20 and lunch at 12:10, on top of the workshops they had booked.
+- The structure of the day now follows the rounds automatically. A workshop line takes the groups of its round. A line for some groups only (such as the People Strategy launch or lunch) that runs at the same time as a workshop goes to the groups not in a workshop then. Central staff and trustees now see: People Strategy launch 10:30, workshops 11:20 and 12:10, lunch 12:55. Bookings already made are unchanged and remain correct.
+
+### New
+- **Timetable clash warning** on the EduHub sessions screen in admin. If any group would be in two places at once, a red warning lists each overlap. Saving the sessions says whether there are any clashes.
+- The workshop booklet's starting timetable now puts central staff with primary staff, to match the live site.
+
 ## Version 6.1: Quorn supplied free of charge
 
 ### New

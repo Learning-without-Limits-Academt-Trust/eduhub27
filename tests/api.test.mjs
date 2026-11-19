@@ -304,7 +304,7 @@ await test("public data shows workshops, rounds and keynote but not admin notes"
   assert.equal(e.agenda.length, 2); assert.equal(e.agenda[1].roundId, "round-1");
   await call("eduhub", { method: "POST", auth: true, body: { section: "programme", ...prog, showAgenda: false } });
   assert.equal((await call("public-data")).data.eduhub.agenda.length, 0);
-  await call("eduhub", { method: "POST", auth: true, body: { section: "programme", ...prog, showAgenda: true } }); assert.deepEqual(e.agenda[1].groups, ["secondary"]);
+  await call("eduhub", { method: "POST", auth: true, body: { section: "programme", ...prog, showAgenda: true } }); assert.deepEqual(e.agenda[1].groups, ["secondary", "central"]); // a workshop line takes its round's groups
   assert.doesNotMatch(JSON.stringify(e), /secret note/);
   assert.equal(e.workshops.find(w => w.id === "breathe").warning, "Allergy warning: uses nuts.");
 });
@@ -625,6 +625,38 @@ await test("the Quorn note appears in confirmation emails for Quorn meals only",
   assert.match(quorn, /supplied locally and free of charge/);
   const tuna = t.confirmationEmail({ itemId: "eduhub-2027", firstName: "A", reference: "R2", foodChoice: "Tuna Mayo Sandwich" }, { eduhub: e, url: "" }).html;
   assert.doesNotMatch(tuna, /free of charge/);
+});
+
+await test("the structure of the day follows the rounds, so nobody is in two places at once", async () => {
+  const u = await import("../netlify/functions/_utils.mjs");
+  // As on the live site in November 2026: central staff moved into the primary
+  // rounds, while the timeline still placed them with secondary staff.
+  const raw = {
+    rounds: [
+      { id: "round-1", label: "Session 1", startTime: "10:30", endTime: "11:15", phases: ["secondary"] },
+      { id: "round-2", label: "Session 1", startTime: "11:20", endTime: "12:05", phases: ["primary", "central"] },
+      { id: "round-3", label: "Session 2", startTime: "12:10", endTime: "12:50", phases: ["primary", "central"] },
+      { id: "round-4", label: "Session 2", startTime: "12:55", endTime: "13:35", phases: ["secondary"] }],
+    workshops: [{ title: "A" }],
+    agenda: [
+      { startTime: "10:30", endTime: "11:15", kind: "general", title: "People Strategy launch", groups: ["primary"] },
+      { startTime: "10:30", endTime: "11:15", kind: "workshop", title: "Workshop", groups: ["secondary", "central"], roundId: "round-1" },
+      { startTime: "11:20", endTime: "12:05", kind: "workshop", title: "Workshop", groups: ["primary"], roundId: "round-2" },
+      { startTime: "11:20", endTime: "12:05", kind: "general", title: "People Strategy launch", groups: ["secondary", "central"] },
+      { startTime: "12:10", endTime: "12:50", kind: "workshop", title: "Workshop", groups: ["primary"], roundId: "round-3" },
+      { startTime: "12:10", endTime: "12:50", kind: "lunch", title: "Lunch", groups: ["secondary", "central"] },
+      { startTime: "12:55", endTime: "13:35", kind: "lunch", title: "Lunch", groups: ["primary"] },
+      { startTime: "12:55", endTime: "13:35", kind: "workshop", title: "Workshop", groups: ["secondary", "central"], roundId: "round-4" }]
+  };
+  const before = u.agendaClashes(raw);
+  assert.deepEqual(before.map(c => `${c.phase} ${c.first.startTime}`), ["central 11:20", "central 12:10"]);
+  const e = u.normaliseEduhub(raw);
+  assert.equal(u.agendaClashes(e).length, 0);
+  const central = e.agenda.filter(a => a.groups.includes("central")).map(a => `${a.startTime} ${a.kind}`);
+  assert.deepEqual(central, ["10:30 general", "11:20 workshop", "12:10 workshop", "12:55 lunch"]);
+  // Anything else that overlaps is still reported for an administrator to fix.
+  const clash = u.normaliseEduhub({ ...raw, agenda: [...raw.agenda, { startTime: "11:00", endTime: "11:30", kind: "general", title: "Photo call" }] });
+  assert.ok(u.agendaClashes(clash).some(c => c.second.title === "Photo call" || c.first.title === "Photo call"));
 });
 
 server.kill(); msMock.close();

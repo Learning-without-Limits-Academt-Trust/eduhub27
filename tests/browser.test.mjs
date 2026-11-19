@@ -160,7 +160,10 @@ await step("admin fills in the workshop booklet, adds schools, and saves", async
   await page.waitForFunction(() => document.querySelector("#admin-message").textContent.includes("Sessions saved"));
   assert.equal(await page.locator(".workshop-row").count(), 14);
   assert.equal(await page.locator("#school-builder .school-row").count(), 4);
-  assert.match(await page.textContent("#session-summary"), /Round 2, 11:20 to 12:05 \(Primary\)/);
+  assert.match(await page.textContent("#session-summary"), /Round 2, 11:20 to 12:05 \(Primary, Central Trust\)/);
+  // The booklet timetable has no clashes for any group.
+  assert.equal((await page.textContent("#clash-warning")).trim(), "");
+  assert.match(await page.textContent("#admin-message"), /No timetable clashes/);
   // Rational Training is invitation only, so its private link now shows.
   inviteLink = await page.locator(".workshop-row", { hasText: "Rational Training" }).locator("[data-invite-url]").inputValue();
   assert.match(inviteLink, /\/eduhub\/\?invite=[A-Za-z0-9]{16,}$/);
@@ -406,7 +409,7 @@ await step("a trustee books without choosing a school", async () => {
   assert.match(await staffPage.textContent("#sessions-legend"), /optional for governors and trustees/);
   await staffPage.fill("#firstName", "Toby"); await staffPage.fill("#lastName", "Trustee"); await staffPage.fill("#email", "toby@example.org");
   await staffPage.waitForSelector(".round-step.is-active");
-  assert.match(await staffPage.textContent("#session-options"), /Round 1/);
+  assert.match(await staffPage.textContent("#session-options"), /Round 2/); // trustees follow the central (primary) timetable
   await chooseWorkshops(staffPage);
   await staffPage.locator("#food-options .food-option").first().locator("input").check(); await staffPage.check("#consent");
   await staffPage.click("#submit-button");

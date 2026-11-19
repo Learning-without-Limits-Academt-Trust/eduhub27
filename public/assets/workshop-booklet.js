@@ -1,8 +1,8 @@
 // Workshops transcribed from "Info on workshops: overview for staff choices
 // and booklet". Round times and the keynote time come from "EduHub Conference
 // 2027: Structure of the day". The groups for each round follow the earlier
-// A/B split (primaries in rounds 2 and 3, secondaries in 1 and 4) and central
-// staff were placed with secondaries as a starting point. The structure of
+// A/B split (primaries in rounds 2 and 3, secondaries in 1 and 4). Central
+// staff follow the primary timetable, as set on the live site in November 2026. The structure of
 // the day follows the same document. The admin dashboard offers this as a starting point only.
 // Nothing is saved until an administrator reviews it and presses Save.
 // "The Without Limits Lab" (Charles Dall’Omo and Rachel Hunnybun) was added
@@ -17,8 +17,7 @@ export const WORKSHOP_BOOKLET_2027 = {
    "startTime": "10:30",
    "endTime": "11:15",
    "phases": [
-    "secondary",
-    "central"
+    "secondary"
    ]
   },
   {
@@ -27,7 +26,8 @@ export const WORKSHOP_BOOKLET_2027 = {
    "startTime": "11:20",
    "endTime": "12:05",
    "phases": [
-    "primary"
+    "primary",
+    "central"
    ]
   },
   {
@@ -36,7 +36,8 @@ export const WORKSHOP_BOOKLET_2027 = {
    "startTime": "12:10",
    "endTime": "12:50",
    "phases": [
-    "primary"
+    "primary",
+    "central"
    ]
   },
   {
@@ -45,8 +46,7 @@ export const WORKSHOP_BOOKLET_2027 = {
    "startTime": "12:55",
    "endTime": "13:35",
    "phases": [
-    "secondary",
-    "central"
+    "secondary"
    ]
   }
  ],
@@ -257,7 +257,8 @@ export const WORKSHOP_BOOKLET_2027 = {
    "detail": "",
    "location": "Sports hall",
    "groups": [
-    "primary"
+    "primary",
+    "central"
    ],
    "roundId": "",
    "id": "item-5"
@@ -270,8 +271,7 @@ export const WORKSHOP_BOOKLET_2027 = {
    "detail": "Please check your badge and follow the signs.",
    "location": "Main School",
    "groups": [
-    "secondary",
-    "central"
+    "secondary"
    ],
    "roundId": "round-1",
    "id": "item-6"
@@ -284,7 +284,8 @@ export const WORKSHOP_BOOKLET_2027 = {
    "detail": "Please check your badge and follow the signs.",
    "location": "Main School",
    "groups": [
-    "primary"
+    "primary",
+    "central"
    ],
    "roundId": "round-2",
    "id": "item-7"
@@ -297,8 +298,7 @@ export const WORKSHOP_BOOKLET_2027 = {
    "detail": "",
    "location": "Sports hall",
    "groups": [
-    "secondary",
-    "central"
+    "secondary"
    ],
    "roundId": "",
    "id": "item-8"
@@ -311,7 +311,8 @@ export const WORKSHOP_BOOKLET_2027 = {
    "detail": "Please check your badge and follow the signs.",
    "location": "Main School",
    "groups": [
-    "primary"
+    "primary",
+    "central"
    ],
    "roundId": "round-3",
    "id": "item-9"
@@ -324,8 +325,7 @@ export const WORKSHOP_BOOKLET_2027 = {
    "detail": "Collect the lunch you ordered, then mingle and wander.",
    "location": "",
    "groups": [
-    "secondary",
-    "central"
+    "secondary"
    ],
    "roundId": "",
    "id": "item-10"
@@ -338,7 +338,8 @@ export const WORKSHOP_BOOKLET_2027 = {
    "detail": "Collect the lunch you ordered, then mingle and wander.",
    "location": "",
    "groups": [
-    "primary"
+    "primary",
+    "central"
    ],
    "roundId": "",
    "id": "item-11"
@@ -351,8 +352,7 @@ export const WORKSHOP_BOOKLET_2027 = {
    "detail": "Please check your badge and follow the signs.",
    "location": "Main School",
    "groups": [
-    "secondary",
-    "central"
+    "secondary"
    ],
    "roundId": "round-4",
    "id": "item-12"

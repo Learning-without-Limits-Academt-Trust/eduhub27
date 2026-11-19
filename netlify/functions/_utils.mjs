@@ -268,11 +268,50 @@ export function normaliseEduhub(raw){
       // A workshop line links to its round, or failing that to the round that starts at the same time.
       .map(a => ({ ...a, roundId: rounds.some(r => r.id === a.roundId) ? a.roundId
         : a.kind === "workshop" && a.startTime ? (rounds.find(r => r.startTime === a.startTime)?.id || "") : "" }))
-      .sort((a,b)=>(a.startTime||"99").localeCompare(b.startTime||"99")),
+      .sort((a,b)=>(a.startTime||"99").localeCompare(b.startTime||"99"))
+      .map((a,_,all) => alignAgendaGroups(a, all, rounds)),
     sessions: programmeSessions(programme.rounds, programme.workshops),
     requireSessionChoice: e.requireSessionChoice !== false,
     updatedAt: e.updatedAt || ""
   };
+}
+
+// The rounds decide who attends each workshop, so the structure of the day
+// follows them. A workshop line takes its round's groups, and a split line at
+// the same time (such as lunch, or the People Strategy launch) goes to the
+// groups that are not in a workshop then. This stops anyone being shown, or
+// booked into, two things at once when an administrator moves a group from
+// one set of rounds to another.
+const toMinutes = t => /^\d\d:\d\d$/.test(String(t||"")) ? Number(t.slice(0,2))*60 + Number(t.slice(3)) : null;
+export const timesOverlap = (a, b) => {
+  const [as, ae, bs, be] = [toMinutes(a.startTime), toMinutes(a.endTime), toMinutes(b.startTime), toMinutes(b.endTime)];
+  if(as === null || bs === null) return false;
+  return as < (be ?? bs + 1) && bs < (ae ?? as + 1);
+};
+function alignAgendaGroups(a, all, rounds){
+  const phasesOf = x => rounds.find(r => r.id === x.roundId)?.phases || [];
+  if(a.kind === "workshop") return phasesOf(a).length ? { ...a, groups: [...phasesOf(a)] } : a;
+  if(!(a.groups || []).length) return a;
+  const busy = new Set(all.filter(x => x.kind === "workshop" && x !== a && timesOverlap(a, x)).flatMap(phasesOf));
+  if(!busy.size) return a;
+  const free = PHASES.filter(p => !busy.has(p));
+  return free.length ? { ...a, groups: free } : a;
+}
+// Lists every place where one group would be in two things at once.
+// Workshop rounds count too, even without a line in the structure of the day.
+export function agendaClashes(e){
+  const out = [];
+  const agenda = e.agenda || [];
+  const extra = (e.rounds || []).filter(r => !agenda.some(a => a.kind === "workshop" && a.roundId === r.id))
+    .map(r => ({ kind: "workshop", title: r.label || "Workshop round", startTime: r.startTime, endTime: r.endTime, groups: r.phases || [], roundId: r.id }));
+  const items = [...agenda.map(a => a.kind === "workshop" && a.roundId ? { ...a, groups: (e.rounds || []).find(r => r.id === a.roundId)?.phases || a.groups } : a), ...extra];
+  for(const phase of PHASES){
+    const mine = items.filter(a => !(a.groups || []).length || a.groups.includes(phase));
+    for(let i = 0; i < mine.length; i++) for(let j = i + 1; j < mine.length; j++){
+      if(timesOverlap(mine[i], mine[j])) out.push({ phase, first: mine[i], second: mine[j] });
+    }
+  }
+  return out;
 }
 
 // What the public can actually do right now, after deadlines are applied.

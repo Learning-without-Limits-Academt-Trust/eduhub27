@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Find my booking poster | EduHub 2027</title>
+<link rel="stylesheet" href="/assets/site.css">
+<style>
+@page{size:A4 portrait;margin:0}
+body{margin:0;background:#fff}
+.poster{box-sizing:border-box;width:210mm;min-height:297mm;margin:0 auto;padding:18mm 16mm;display:flex;flex-direction:column;align-items:center;text-align:center;font-family:"Source Sans 3","Open Sans",Arial,sans-serif;color:#1F1F1F;
+  background:radial-gradient(900px 700px at 15% 5%,#098F88 0%,#00706A 50%,#00524E 100%);-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.poster .card{background:#fff;border-radius:10mm;padding:10mm 12mm 12mm;width:100%;box-sizing:border-box;display:flex;flex-direction:column;align-items:center}
+.poster .logo{width:120mm;max-height:55mm;object-fit:contain}
+.poster h1{font-size:40pt;font-weight:900;margin:6mm 0 2mm;line-height:1}
+.poster .lede{font-size:17pt;margin:0 0 6mm;max-width:150mm}
+.poster .qr{width:110mm;height:110mm}
+.poster ol{font-size:15pt;text-align:left;margin:6mm 0 0;padding-left:8mm;line-height:1.5}
+.poster .foot{color:#fff;font-size:14pt;margin-top:8mm}
+.print-tip{max-width:210mm;margin:12px auto;font-family:Arial,sans-serif}
+@media print{.print-tip{display:none}}
+</style>
+</head>
+<body>
+<p class="print-tip">Print this page on A4, in colour if you can. <button type="button" class="button small-button" id="print-poster">Print poster</button></p>
+<div class="poster">
+  <div class="card">
+    <img class="logo" data-trim src="/assets/Eduhub-logo.png" alt="EduHub 27: Better together">
+    <h1>Can't find your ticket?</h1>
+    <p class="lede">Scan this code with your phone camera to see your booking.</p>
+    <img class="qr" src="/assets/find-my-booking-qr.png" alt="QR code for Find my booking">
+    <ol>
+      <li>Enter your surname and the email address you booked with.</li>
+      <li>Your ticket appears on your phone.</li>
+      <li>Show it at the registration desk to collect your name badge.</li>
+    </ol>
+  </div>
+  <p class="foot">Still stuck? Please come to the help desk.</p>
+</div>
+<script type="module" src="/assets/poster.js"></script>
+</body>
+</html>

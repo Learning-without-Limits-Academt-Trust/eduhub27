@@ -457,6 +457,18 @@ await test("a failed email never loses the booking, and is recorded", async () =
   const b = (await call("admin-data", { auth: true })).data.bookings.find(x => x.email === "bounce.me@lwlat.org.uk");
   assert.match(b.emailError, /ErrorAccessDenied/);
 });
+await test("Find my booking needs both surname and email, and returns only that ticket", async () => {
+  const find = body => call("find-ticket", { method: "POST", body });
+  const ok = await find({ lastName: "  person 500 ", email: "TEST.PERSON500@lwlat.org.uk" });
+  assert.equal(ok.status, 200, JSON.stringify(ok.data));
+  assert.equal(ok.data.ticketPath, `/ticket/?${ticketPath}`);
+  const wrongName = await find({ lastName: "Someone", email: "test.person500@lwlat.org.uk" });
+  assert.equal(wrongName.status, 404); assert.match(wrongName.data.error, /could not find a booking/);
+  assert.ok(!JSON.stringify(wrongName.data).includes(ticketBooking.id));
+  assert.equal((await find({ lastName: "Person 500", email: "nobody@lwlat.org.uk" })).status, 404);
+  assert.equal((await find({ lastName: "", email: "" })).status, 400);
+  assert.equal((await call("find-ticket")).status, 405);
+});
 await test("QR image and ticket need a valid signature", async () => {
   const good = await fetch(`${BASE}/api/qr?${ticketPath}`);
   assert.equal(good.status, 200); assert.equal(good.headers.get("content-type"), "image/png");

@@ -68,6 +68,11 @@ function renderAll({keepEduhubForm=false,keepProgrammeForm=false}={}){
     ?`<span class="email-ok"><strong>Switched on.</strong></span> Confirmation emails with QR codes are sent from <strong>${escapeHtml(data.mailFrom)}</strong> when someone books.`
     :'<strong>Not set up yet.</strong> Bookings still work, but no emails are sent. Your IT team need to add four settings in Netlify. The steps are in docs/EMAIL-SETUP-FOR-IT.md.';
   $('#email-test-form').classList.toggle('hidden',!data.emailConfigured);
+  if(!sendingAll){
+    const n=data.bookings.filter(b=>b.itemId===EDUHUB_ID&&statusOf(b)==='booked').length;
+    $('#send-all').disabled=!data.emailConfigured||!n;
+    $('#send-all-note').textContent=!data.emailConfigured?'Email is not set up yet, so tickets cannot be sent.':n?`${n} confirmed ${n===1?'booking':'bookings'} will be emailed.`:'There are no confirmed bookings yet.';
+  }
   $('#courses-table').innerHTML=data.courses.length?data.courses.map(c=>{
     const booked=countFor(c.id,'booked'), waiting=countFor(c.id,'waiting');
     return `<tr><td><strong>${escapeHtml(c.title)}</strong><br><span class="muted">${escapeHtml(c.audience||'')}</span></td><td>${fmt(nextDate(c))}</td><td>${escapeHtml(c.status)}</td><td>${c.bookingOpen===false?'Closed':'Open'}${c.bookingDeadline?`<br><span class="muted">until ${fmt(c.bookingDeadline)}</span>`:''}</td><td>${booked}${Number(c.capacity)?` of ${escapeHtml(c.capacity)}`:''}${waiting?`<br><span class="muted">${waiting} waiting</span>`:''}</td><td><div class="actions"><button class="ghost preview-course" data-id="${escapeHtml(c.id)}">Preview</button><button class="ghost edit-course" data-id="${escapeHtml(c.id)}">Edit</button><button class="ghost duplicate-course" data-id="${escapeHtml(c.id)}">Duplicate</button><button class="ghost view-course-bookings" data-id="${escapeHtml(c.id)}">Bookings</button><button class="danger delete-course" data-id="${escapeHtml(c.id)}">Delete</button></div></td></tr>`}).join(''):'<tr><td colspan="6">No opportunities have been created yet.</td></tr>';
@@ -395,6 +400,27 @@ bf.addEventListener('submit',async e=>{
   try{await api('booking',{method:'POST',body:JSON.stringify({id:bf.id.value,action:'update',fields})});closeBookingModal();await refresh();message('Booking saved.')}
   catch(err){message(err.message,'notice error')}
 });
+
+// Email every confirmed EduHub booking their ticket again, one at a time,
+// slowly enough to stay inside Microsoft's sending limit for one mailbox.
+let sendingAll=false, stopSending=false;
+$('#send-all').addEventListener('click',async()=>{
+  const list=data.bookings.filter(b=>b.itemId===EDUHUB_ID&&statusOf(b)==='booked');
+  if(!list.length||!confirm(`Email ${list.length} ${list.length===1?'person':'people'} their EduHub ticket now? This takes about ${Math.max(1,Math.ceil(list.length/25))} minute${list.length>25?'s':''}. Please keep this page open.`)) return;
+  sendingAll=true;stopSending=false;$('#send-all').disabled=true;$('#send-all-stop').classList.remove('hidden');
+  const failed=[];let sent=0;
+  for(const [i,b] of list.entries()){
+    if(stopSending) break;
+    $('#send-all-progress').innerHTML=`<p class="notice">Sending ${i+1} of ${list.length}: ${escapeHtml(b.firstName)} ${escapeHtml(b.lastName)}</p>`;
+    try{const r=await api('booking',{method:'POST',body:JSON.stringify({id:b.id,action:'resend'})});if(r.email?.sent)sent++;else failed.push(`${b.firstName} ${b.lastName} (${r.email?.reason||'not sent'})`)}
+    catch(err){failed.push(`${b.firstName} ${b.lastName} (${err.message})`)}
+    await new Promise(res=>setTimeout(res,2400));
+  }
+  sendingAll=false;$('#send-all-stop').classList.add('hidden');
+  $('#send-all-progress').innerHTML=`<p class="notice ${failed.length?'warn':''}">${stopSending?'Stopped. ':''}${sent} ${sent===1?'ticket':'tickets'} sent.${failed.length?` ${failed.length} could not be sent:`:''}</p>${failed.length?`<ul>${failed.map(f=>`<li>${escapeHtml(f)}</li>`).join('')}</ul>`:''}`;
+  await refresh();
+});
+$('#send-all-stop').addEventListener('click',()=>{stopSending=true});
 
 $('#email-test-form').addEventListener('submit',async e=>{
   e.preventDefault();

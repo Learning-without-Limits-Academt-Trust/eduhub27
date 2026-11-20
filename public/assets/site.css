@@ -781,3 +781,45 @@ body.immersive .footer-text a{color:#fff;font-weight:700;margin-left:10px}
 .quorn-tag{background:#eef6d6;color:#3f5a12}
 .quorn-small{display:block;margin-top:4px;font-size:.85rem;color:#586d70}
 body.immersive .hero-quorn{font-size:1rem!important;color:#e6f6c4!important;border-left:3px solid var(--lgreen);padding-left:12px}
+
+/* ---------- v6.3: find my booking and the check-in desk ---------- */
+.find-wrap{max-width:560px}
+body.immersive .find-title{color:#fff;font-size:clamp(2.4rem,7vw,3.6rem);line-height:1;margin:0 0 .3em}
+body.immersive .find-lede{color:#d9f3f0;font-size:1.1rem;margin:0 0 24px}
+.find-form{display:grid;gap:16px}
+.find-form .button{font-size:1.1rem;padding:15px}
+.find-help{margin:0;text-align:center}
+/* Check-in desk */
+.desk-wrap{max-width:860px;margin:0 auto;padding:24px 18px 60px}
+.desk-head{display:flex;align-items:center;gap:20px}
+.desk-head h1{margin:0}
+.desk-head .button{margin-left:auto}
+.desk-logo{width:180px;max-height:90px;object-fit:contain;mix-blend-mode:multiply}
+.desk-scan input{font-size:1.4rem;padding:16px}
+.desk-scan label,.desk-search label{font-size:1.1rem}
+.desk-search{margin-top:24px;display:grid;gap:8px}
+.desk-result{margin:16px 0;padding:18px 20px;border-radius:16px;font-size:1.1rem}
+.desk-result p{margin:4px 0}
+.desk-result.ok{background:#e4f6e8;border:2px solid #2e8540}
+.desk-result.warn{background:#fff4d8;border:2px solid #d99a00}
+.desk-result.error{background:#fde8ed;border:2px solid var(--red)}
+.desk-name{font-size:1.6rem;font-weight:800}
+.desk-list{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+.desk-list li{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 14px;border:1px solid #d9e6e5;border-radius:12px}
+.desk-settings{margin-top:24px}
+.badge-sheet{display:none}
+@media print{
+  body.desk-page > *:not(#badge){display:none!important}
+  body.desk-page{background:#fff}
+  body.desk-page #badge{display:block}
+  .badge{box-sizing:border-box;width:90mm;height:62mm;padding:4mm 5mm;overflow:hidden;font-family:"Source Sans 3","Open Sans",Arial,sans-serif;color:#111;display:flex;flex-direction:column}
+  body[data-badge="102mm76mm"] .badge{width:102mm;height:76mm}
+  body[data-badge="105mm148mm"] .badge{width:105mm;height:148mm;padding:10mm 8mm}
+  .badge-logo{height:12mm;width:auto;align-self:flex-start;margin-bottom:2mm}
+  .badge-first{font-size:26pt;font-weight:900;line-height:1}
+  .badge-last{font-size:15pt;font-weight:700;line-height:1.1}
+  .badge-where{font-size:10pt;margin-top:1mm;color:#00706A;font-weight:700}
+  .badge-sessions{list-style:none;padding:0;margin:auto 0 0;font-size:7.5pt;line-height:1.25}
+  body[data-badge="105mm148mm"] .badge-first{font-size:40pt}
+  body[data-badge="105mm148mm"] .badge-sessions{font-size:10pt}
+}

@@ -39,6 +39,7 @@ export default async request => {
  const out = { reference: b.reference, firstName: b.firstName, itemTitle: b.itemTitle, status: bookingStatusOf(b), event,
    sessions: (b.sessions || []).map(s => ({ title: s.title, time: s.time, room: s.room })), isAdmin: admin };
  if(admin) Object.assign(out, { lastName: b.lastName, organisation: b.organisation, phaseName: b.phaseName || "", foodChoice: b.foodChoice || "",
-   dietary: b.dietary || "", accessibility: b.accessibility || "", checkedInAt: b.checkedInAt || "" });
+   dietary: b.dietary || "", accessibility: b.accessibility || "", checkedInAt: b.checkedInAt || "",
+   role: b.role || "staff", roleName: b.roleName || "", leading: b.leading || "", id: b.id });
  return json(out);
 };

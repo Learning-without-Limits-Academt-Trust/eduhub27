@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Check-in desk | EduHub 2027</title>
+<link rel="stylesheet" href="/assets/site.css">
+<style id="badge-page-size">@page{size:90mm 62mm;margin:0}</style>
+</head>
+<body class="admin-page desk-page">
+<main class="desk-wrap">
+  <header class="desk-head">
+    <img data-trim src="/assets/Eduhub-logo.png" alt="EduHub 27: Better together" class="desk-logo">
+    <div>
+      <h1>Check-in desk</h1>
+      <p class="muted" id="desk-count">Loading bookings</p>
+    </div>
+    <a class="button secondary small-button" href="/admin/">Back to admin</a>
+  </header>
+
+  <div id="desk-signin" class="notice error hidden">Please <a href="/admin/">sign in to admin</a> on this device first, then come back to this page.</div>
+
+  <section class="panel desk-panel" id="desk-main">
+    <form id="scan-form" class="desk-scan" autocomplete="off">
+      <label for="scan">Scan a ticket</label>
+      <input id="scan" name="scan" placeholder="Click here, then scan the QR code" autofocus>
+      <p class="field-help">Use a USB or Bluetooth QR scanner. It types the ticket link here and presses Enter for you.</p>
+    </form>
+    <div id="desk-result" aria-live="assertive"></div>
+
+    <div class="desk-search">
+      <label for="search">No ticket? Search by surname</label>
+      <input id="search" type="search" placeholder="Type at least 2 letters">
+      <div id="search-results"></div>
+    </div>
+
+    <details class="desk-settings">
+      <summary>Badge settings</summary>
+      <label class="check-label"><input type="checkbox" id="auto-print" checked> Print a badge automatically after each check-in</label>
+      <div class="field"><label for="badge-size">Badge size</label>
+        <select id="badge-size">
+          <option value="90mm 62mm">90 × 62 mm (Brother 62 mm labels)</option>
+          <option value="102mm 76mm">102 × 76 mm (4 × 3 inch labels)</option>
+          <option value="105mm 148mm">A6 portrait</option>
+        </select></div>
+      <p class="field-help">For printing without a print window, open Chrome with kiosk printing switched on. See the instructions in docs/CHECK-IN-DESK.md.</p>
+    </details>
+  </section>
+</main>
+
+<div id="badge" class="badge-sheet" aria-hidden="true"></div>
+<script type="module" src="/assets/desk.js"></script>
+</body>
+</html>

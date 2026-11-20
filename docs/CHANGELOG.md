@@ -1,5 +1,14 @@
 # Changelog
 
+## Version 6.3: registration on the day
+
+### New
+- **Email all tickets** (admin, Overview). Sends every confirmed EduHub booking their confirmation email and QR ticket again, about 25 a minute so as to stay inside Microsoft's sending limit. Shows progress, can be stopped, and lists any that failed. Disabled until email is set up.
+- **Find my booking** (`/eduhub/find/`). Someone enters their surname and the email address they booked with, and their ticket with its QR code appears on their phone. Both must match; the reply never says which was wrong, and repeated failures from one network are limited.
+- **QR poster** (`/admin/desk/poster.html`, linked from admin Overview). A branded A4 poster whose QR code opens Find my booking.
+- **Check-in desk** (`/admin/desk/`, admin only). Scan a ticket with a USB or Bluetooth QR scanner, or search by surname, to check someone in. Their name badge prints automatically: EduHub 27 logo, name, school or role, and workshops with times and rooms. Never dietary or allergy details. Badge sizes: 90 × 62 mm, 102 × 76 mm or A6. With Chrome's kiosk printing switched on, badges print without a print window. Setup steps are in `docs/CHECK-IN-DESK.md`.
+- The ticket page now uses the white Trust logo in its header.
+
 ## Version 6.2: no timetable clashes
 
 ### Fixed

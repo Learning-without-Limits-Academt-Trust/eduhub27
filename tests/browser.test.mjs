@@ -353,6 +353,48 @@ await step("confirmation shows a QR ticket; the ticket page works for staff and 
   await door.close();
 });
 
+await step("on the day: Find my booking shows the ticket, and the desk checks in and prints a badge", async () => {
+  // Someone without their email scans the poster and finds their own ticket.
+  const guest = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const gp = await guest.newPage();
+  await gp.goto(BASE + "/eduhub/find/");
+  await gp.fill("#lastName", "Smithers"); await gp.fill("#email", "alex.taylor@lwlat.org.uk");
+  await gp.click("#find-button");
+  await gp.waitForSelector("#find-message .notice.error");
+  await gp.fill("#lastName", " taylor "); await gp.fill("#email", "Alex.Taylor@lwlat.org.uk");
+  await gp.click("#find-button");
+  await gp.waitForURL(/\/ticket\/\?b=/);
+  await gp.waitForSelector(".ticket-qr");
+  const ticketHref = gp.url();
+  await snap("05e-find-my-booking-ticket", gp);
+  await guest.close();
+  // At the desk, signed in: undo the earlier check-in, then scan the ticket.
+  const desk = await context.newPage();
+  await desk.addInitScript(() => { window.__prints = 0; window.print = () => { window.__prints++; }; });
+  await desk.goto(BASE + "/admin/desk/");
+  await desk.waitForFunction(() => /checked in/.test(document.querySelector("#desk-count").textContent));
+  const q = new URL(ticketHref).searchParams;
+  await desk.evaluate(([b, s]) => fetch("/api/ticket", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ b, s, action: "undo" }) }), [q.get("b"), q.get("s")]);
+  await desk.fill("#scan", ticketHref); await desk.press("#scan", "Enter");
+  await desk.waitForSelector(".desk-result.ok");
+  assert.match(await desk.textContent(".desk-result"), /Alex Taylor[\s\S]*Checked in/);
+  await desk.waitForFunction(() => window.__prints === 1);
+  const badge = await desk.textContent("#badge");
+  assert.match(badge, /Alex/); assert.match(badge, /Taylor/); assert.match(badge, /Example Primary School/);
+  assert.doesNotMatch(badge, /lactose/i);
+  if (shots) { await desk.emulateMedia({ media: "print" }); await desk.pdf({ path: `${shots}/05f-badge.pdf`, width: "90mm", height: "62mm", printBackground: true }); await desk.emulateMedia({ media: "screen" }); }
+  // Scanning again warns and does not print a second badge.
+  await desk.fill("#scan", ticketHref); await desk.press("#scan", "Enter");
+  await desk.waitForSelector(".desk-result.warn");
+  assert.equal(await desk.evaluate(() => window.__prints), 1);
+  // Search by surname finds people without a ticket.
+  await desk.fill("#search", "tay");
+  await desk.waitForSelector("#search-results [data-id]");
+  assert.match(await desk.textContent("#search-results"), /Alex Taylor/);
+  await snap("05g-check-in-desk", desk);
+  await desk.close();
+});
+
 await step("booking the same email again is refused", async () => {
   await staffPage.goto(BASE + "/eduhub/");
   await staffPage.waitForSelector(".food-option");
@@ -469,6 +511,8 @@ await step("admin sees food, allergens and catering totals", async () => {
   assert.match(table, /Waiting list/);
   assert.match(table, /Checked in \d\d:\d\d/);
   assert.match(await page.textContent("#overview-view"), /Not set up yet/);
+  assert.ok(await page.isDisabled("#send-all"));
+  assert.match(await page.textContent("#send-all-note"), /Email is not set up yet/);
   await snap("07-admin-bookings");
 });
 

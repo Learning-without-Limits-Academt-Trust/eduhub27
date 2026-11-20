@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Find my booking | EduHub 2027</title>
+<link rel="stylesheet" href="/assets/site.css">
+</head>
+<body class="immersive find-page">
+<div class="backdrop" aria-hidden="true"><svg viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice"><g fill="none"><circle cx="1480" cy="120" r="420" stroke="#00524E" stroke-width="70" opacity=".45"/><circle cx="1480" cy="120" r="300" stroke="#73A434" stroke-width="18" opacity=".28"/><circle cx="80" cy="1040" r="380" stroke="#00524E" stroke-width="60" opacity=".4"/><circle cx="80" cy="1040" r="250" stroke="#00706A" stroke-width="22" opacity=".5"/></g></svg></div>
+<header class="site-header">
+  <div class="container nav">
+    <a class="brand brand-lockup" href="/"><img class="logo-white" src="/assets/lwlat-logo-white.png" alt="Learning without Limits Academy Trust"><span>Learning Hub</span></a>
+  </div>
+</header>
+<main class="section">
+  <div class="container find-wrap">
+    <p class="eyebrow-pill"><span class="glow" aria-hidden="true"></span>EduHub 2027 registration</p>
+    <h1 class="find-title">Find my booking</h1>
+    <p class="find-lede">Enter your surname and the email address you booked with. Your ticket will appear, ready to show at the registration desk.</p>
+    <form id="find-form" class="form-shell find-form" novalidate>
+      <img class="side-logo" data-trim src="/assets/Eduhub-logo.png" alt="EduHub 27: Better together">
+      <div id="find-message" aria-live="polite"></div>
+      <div class="field"><label for="lastName">Surname</label><input id="lastName" name="lastName" required autocomplete="family-name" maxlength="80"></div>
+      <div class="field"><label for="email">Email address</label><input id="email" name="email" type="email" required autocomplete="email" maxlength="160" inputmode="email"></div>
+      <button class="button full-width" type="submit" id="find-button">Show my ticket</button>
+      <p class="muted small find-help">Can't find it? Please go to the help desk at registration and we will sort it out.</p>
+    </form>
+  </div>
+</main>
+<footer class="footer"><div class="container footer-row"><img src="/assets/lwlat-logo-white.png" alt="Learning without Limits Academy Trust"><p class="footer-text">Learning without Limits Academy Trust <a href="https://www.lwlat.org.uk/">lwlat.org.uk</a></p></div></footer>
+<script type="module" src="/assets/find.js"></script>
+</body>
+</html>

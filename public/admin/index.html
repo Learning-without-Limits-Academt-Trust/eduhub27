@@ -23,7 +23,18 @@
 <div class="panel"><h2>Confirmation emails</h2><p id="email-status"></p>
   <form id="email-test-form" class="filter-row email-test-row hidden"><div class="field"><label for="email-test-to">Send a test email to</label><input id="email-test-to" type="email" placeholder="you@lwlat.org.uk"></div><div class="field"><label>&nbsp;</label><button type="submit" class="button secondary">Send test email</button></div></form>
 </div>
-<div class="panel"><h2>Scanning tickets on the day</h2><p>Each confirmation email includes a QR code. To scan people in, sign in to this admin area on your phone, then point the phone's camera at each QR code and tap the link that appears. The phone shows a green screen when someone is checked in, amber if they have already been checked in, and red if their booking was cancelled.</p></div>
+<div class="panel"><h2>Email everyone their ticket</h2>
+  <p>Sends every confirmed EduHub booking their confirmation email and QR code ticket again. Use it a few days before the event. Emails go out at about 25 a minute, so please keep this page open until it finishes.</p>
+  <p id="send-all-note" class="muted"></p>
+  <div class="admin-form-actions"><button type="button" class="button" id="send-all">Email all tickets</button><button type="button" class="button secondary hidden" id="send-all-stop">Stop</button></div>
+  <div id="send-all-progress" aria-live="polite"></div>
+</div>
+<div class="panel"><h2>Registration on the day</h2>
+  <p><strong>For people without their email:</strong> print the poster below and put it up at the entrance. Scanning its QR code opens <strong>Find my booking</strong>, where people enter their surname and email address to see their ticket on their phone.</p>
+  <p><strong>At the desk:</strong> open the check-in desk on a laptop signed in to admin. Scanning a ticket checks the person in and prints their name badge. People without a ticket can be found by surname.</p>
+  <div class="admin-form-actions"><a class="button" href="/admin/desk/">Open the check-in desk</a><a class="button secondary" href="/admin/desk/poster.html" target="_blank" rel="noopener">Print the QR poster</a></div>
+  <p class="muted small">You can also check people in from a phone: sign in to admin on the phone, scan the QR code with the camera and tap the link.</p>
+</div>
 <div class="panel"><h2>Welcome to the Learning Hub</h2><p>Create and publish professional learning opportunities, manage EduHub separately, monitor bookings and export delegate information from one place.</p></div>
 </section>
 

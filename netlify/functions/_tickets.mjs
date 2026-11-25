@@ -98,8 +98,8 @@ export function confirmationEmail(b, { eduhub, course, url }){
   const subject = waiting ? `Waiting list: ${title} (${b.reference})` : b.role === "speaker" ? `Your lunch booking for ${title} (${b.reference})` : `Your booking for ${title} (${b.reference})`;
   const facts = [["Booking reference", `<strong>${esc(b.reference)}</strong>`], ...eventFacts(b, eduhub, course)].map(([l, v]) => row(l, v)).join("");
   const ticket = waiting || !url ? "" : `
-    <h2 style="font-size:18px;margin:28px 0 8px;color:#009189">Your ticket</h2>
-    <p style="margin:0 0 12px">Please bring this QR code with you on the day, either on your phone or printed. We will scan it when you arrive.</p>
+    <h2 style="font-size:18px;margin:28px 0 8px;color:#009189">Your ticket: show this code at registration</h2>
+    <p style="margin:0 0 12px">Please bring this QR code with you on the day, either on your phone or printed. The registration desk will scan it to check you in and print your name badge.</p>
     <p style="margin:0 0 12px"><img src="cid:ticketqr" width="220" height="220" alt="QR code for booking ${esc(b.reference)}" style="display:block;border:1px solid #d5e7e4;border-radius:8px"></p>
     <p style="margin:0 0 12px;font-size:14px">If the code does not show, <a href="${esc(url)}" style="color:#009189">open your ticket here</a>.</p>`;
   const html = `<!doctype html><html><body style="margin:0;background:#f4f8f8;font-family:'Open Sans',Arial,sans-serif;color:#183033;line-height:1.5">

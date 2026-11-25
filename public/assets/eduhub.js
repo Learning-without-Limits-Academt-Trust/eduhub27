@@ -509,7 +509,7 @@ function showConfirmation(data, body){
       ${body.sessionIds.length ? `<div><dt>Workshops</dt><dd>${body.sessionIds.map(id => (eduhub.sessions || []).find(x => x.id === id)).filter(Boolean).map(x => `${esc(slotLabel(x))}: ${esc(x.title)}${x.room ? `, ${esc(x.room)}` : ''}`).join('<br>')}</dd></div>` : ''}
       ${food ? `<div><dt>Food choice</dt><dd>${esc(food)}${hasQuorn(food) ? `<span class="quorn-small">${esc(QUORN_NOTE)}</span>` : ''}</dd></div>` : ''}
     </dl>
-    ${data.ticketUrl ? `<div class="ticket-inline"><h3>Your ticket</h3>
+    ${data.ticketUrl ? `<div class="ticket-inline"><h3>Your ticket</h3><p class="show-code">Show this code at registration</p>
       <img class="ticket-qr" src="/api/qr?${esc(data.ticketUrl.split('?')[1] || '')}" width="220" height="220" alt="QR code for your booking">
       <p class="screen-only">${data.emailSent ? `We have also emailed this ticket to <strong>${esc(body.email)}</strong>.` : 'Please print your booking or keep the link below.'} Bring it with you on the day.</p>
       <p class="print-only">Please bring this page with you. We will scan the code when you arrive.</p>

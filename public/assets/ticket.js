@@ -34,11 +34,13 @@ function renderTicket(t){
   $('#ticket').innerHTML = `
     <div class="eyebrow teal">${confirmed ? 'Your ticket' : t.status === 'waiting' ? 'Waiting list' : 'Cancelled booking'}</div>
     <h1 class="ticket-title">${esc(t.firstName)}${t.isAdmin ? ` ${esc(t.lastName)}` : ''}</h1>
-    ${confirmed ? `<img class="ticket-qr" src="/api/qr?${qs}" width="260" height="260" alt="QR code for booking ${esc(t.reference)}">
-      <p class="ticket-hint">Please show this code at registration. You can also print this page.</p>`
+    ${confirmed ? `<p class="show-code" ${t.isAdmin ? 'hidden' : ''}>Show this code at registration</p>
+      <img class="ticket-qr" src="/api/qr?${qs}" width="260" height="260" alt="QR code for booking ${esc(t.reference)}">
+      <p class="ticket-hint">The registration desk will scan it to check you in and print your name badge. You can also print this page.</p>`
       : t.status === 'waiting' ? '<p class="notice warn">You are on the waiting list. We will email you a ticket if a place becomes available.</p>'
       : '<p class="notice error">This booking has been cancelled.</p>'}
     ${confirmed && !t.isAdmin && params.get('arrived') === '1' ? '<p class="notice arrived-note"><strong>Thank you, the registration desk can see you have arrived.</strong> Please go to the desk to collect your name badge.</p>' : ''}
+    ${confirmed && !t.isAdmin && params.get('arrived') === 'already' ? '<p class="notice arrived-note"><strong>You are already checked in.</strong> If you need your name badge, please ask at the registration desk. Enjoy the day!</p>' : ''}
     ${details(t)}
     ${confirmed && !t.isAdmin ? '<button class="button secondary" type="button" id="print-ticket">Print ticket</button>' : ''}`;
   $('#print-ticket')?.addEventListener('click', () => window.print());

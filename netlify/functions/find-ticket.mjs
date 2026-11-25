@@ -48,5 +48,6 @@ export default async request => {
       return { value: list, result: null };
     }).catch(() => {});
   }
-  return json({ ok: true, ticketPath: url + "&arrived=1" });
+  // Someone already checked in at the desk is told so, rather than added to the list again.
+  return json({ ok: true, ticketPath: url + (b.checkedInAt ? "&arrived=already" : "&arrived=1") });
 };

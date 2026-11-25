@@ -390,6 +390,19 @@ await step("on the day: the welcome QR puts people on the desk screen, and one c
   assert.doesNotMatch(badge, /lactose/i);
   if (shots) { await desk.emulateMedia({ media: "print" }); await desk.pdf({ path: `${shots}/05f-badge.pdf`, width: "90mm", height: "62mm", printBackground: true }); await desk.emulateMedia({ media: "screen" }); }
   await desk.waitForFunction(() => /Nobody waiting yet/.test(document.querySelector("#arrivals").textContent), null, { timeout: 10000 });
+  // Signing in again on the phone after being checked in at the desk causes no problem:
+  // the phone says they are already checked in, and they do not reappear on the desk.
+  const again = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const ap = await again.newPage();
+  await ap.goto(BASE + "/eduhub/find/");
+  await ap.fill("#lastName", "Taylor"); await ap.fill("#email", "alex.taylor@lwlat.org.uk");
+  await ap.click("#find-button");
+  await ap.waitForSelector(".ticket-qr");
+  assert.match(await ap.textContent("#ticket"), /already checked in/);
+  assert.match(await ap.textContent("#ticket"), /Show this code at registration/);
+  await again.close();
+  await desk.waitForTimeout(4500);
+  assert.match(await desk.textContent("#arrivals"), /Nobody waiting yet/);
   // Scanning the ticket afterwards warns and does not print a second badge.
   await desk.fill("#scan", ticketHref); await desk.press("#scan", "Enter");
   await desk.waitForSelector(".desk-result.warn");

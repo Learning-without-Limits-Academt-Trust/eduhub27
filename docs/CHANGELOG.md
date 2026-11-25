@@ -1,5 +1,14 @@
 # Changelog
 
+## Version 6.5: clearer tickets and poster
+
+### Changed
+- **Welcome poster:** "Scan this code with your own phone's camera as you arrive", with a highlighted line: "No app to download and no account needed. Nothing is saved on your phone." The sign-in page says the same under the Sign in button.
+- **Tickets:** a bold "Show this code at registration" banner sits above the QR code on the ticket page and the confirmation screen, and the email heading reads "Your ticket: show this code at registration".
+
+### Fixed
+- Someone who signs in with the welcome QR after already being checked in at the desk is told "You are already checked in", and is not added to Arriving now again.
+
 ## Version 6.4: arriving now
 
 ### New

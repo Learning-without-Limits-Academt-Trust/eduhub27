@@ -8,7 +8,7 @@ form.addEventListener('submit', async e => {
   const lastName = form.lastName.value.trim(), email = form.email.value.trim();
   if(!lastName || !email){ $('#find-message').innerHTML = '<p class="notice error">Please enter your surname and email address.</p>'; return; }
   const button = $('#find-button');
-  button.disabled = true; button.textContent = 'Looking for your booking';
+  button.disabled = true; button.textContent = 'Signing you in';
   try{
     const res = await fetch('/api/find-ticket', { method:'POST', headers:{'content-type':'application/json'}, body: JSON.stringify({ lastName, email }) });
     const data = await res.json().catch(() => ({}));
@@ -16,6 +16,6 @@ form.addEventListener('submit', async e => {
     location.href = data.ticketPath;
   }catch(err){
     $('#find-message').innerHTML = `<p class="notice error" role="alert">${esc(err.message)}</p>`;
-    button.disabled = false; button.textContent = 'Show my ticket';
+    button.disabled = false; button.textContent = 'Sign in';
   }
 });

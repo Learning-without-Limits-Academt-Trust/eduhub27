@@ -3,7 +3,7 @@
 ## Before the day
 
 1. **Email everyone their ticket.** In admin, go to Overview, then **Email everyone their ticket**, and press **Email all tickets**. Keep the page open until it finishes (about 25 emails a minute). Any that could not be sent are listed.
-2. **Print the poster.** In admin, go to Overview, then **Print the QR poster**. Print it on A4, in colour if possible, and put copies at the entrance and the queue. Its QR code opens **Find my booking** (`/eduhub/find/`), where people enter their surname and booking email address to see their ticket.
+2. **Print the welcome poster.** In admin, go to Overview, then **Print the welcome poster**. Print it on A4, in colour if possible, and put copies at the entrance and along the way to registration. Its QR code opens the sign-in page (`/eduhub/find/`), where people enter their surname and booking email address.
 
 ## Equipment for each desk
 
@@ -26,6 +26,7 @@ Do a test the day before: scan a ticket, check the badge prints, then use **Undo
 
 ## On the day
 
+- **Arriving now:** as soon as someone scans the welcome poster and signs in on their phone, their name appears at the top of the check-in desk screen, usually within five seconds. Click their name to check them in and print their badge. "Not here" removes a name without checking them in. Names drop off after four hours.
 - **Scan a ticket:** click in the "Scan a ticket" box, then scan the QR code on the person's phone or printout. The screen goes green and the badge prints.
   - Amber means they were already checked in. Press **Print badge again** if they need a new badge.
   - Red means the booking was cancelled.

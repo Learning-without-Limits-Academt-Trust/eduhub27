@@ -461,7 +461,13 @@ await test("Find my booking needs both surname and email, and returns only that 
   const find = body => call("find-ticket", { method: "POST", body });
   const ok = await find({ lastName: "  person 500 ", email: "TEST.PERSON500@lwlat.org.uk" });
   assert.equal(ok.status, 200, JSON.stringify(ok.data));
-  assert.equal(ok.data.ticketPath, `/ticket/?${ticketPath}`);
+  assert.equal(ok.data.ticketPath, `/ticket/?${ticketPath}&arrived=1`);
+  // They now appear on the desk's "Arriving now" list, for admins only.
+  assert.equal((await call("arrivals")).status, 401);
+  const arriving = (await call("arrivals", { auth: true })).data.people;
+  assert.equal(arriving.length, 1); assert.equal(arriving[0].lastName, "Person 500"); assert.equal(arriving[0].id, ticketBooking.id);
+  await call("arrivals", { method: "POST", auth: true, body: { id: ticketBooking.id } });
+  assert.equal((await call("arrivals", { auth: true })).data.people.length, 0);
   const wrongName = await find({ lastName: "Someone", email: "test.person500@lwlat.org.uk" });
   assert.equal(wrongName.status, 404); assert.match(wrongName.data.error, /could not find a booking/);
   assert.ok(!JSON.stringify(wrongName.data).includes(ticketBooking.id));

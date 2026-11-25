@@ -106,5 +106,31 @@ $('#search-results').addEventListener('click', e => {
   else checkIn(b.id, b.ticketSig);
 });
 
+// "Arriving now": people who signed in with the welcome QR code. Checked every
+// few seconds, so names appear before the person reaches the desk.
+async function loadArrivals(){
+  const res = await fetch('/api/arrivals', { cache: 'no-store' }).catch(() => null);
+  if(!res || !res.ok) return;
+  const { people = [] } = await res.json();
+  $('#arrivals-count').textContent = people.length ? `(${people.length})` : '';
+  const ago = t => { const m = Math.round((Date.now() - new Date(t)) / 60000); return m < 1 ? 'just now' : `${m} min ago`; };
+  $('#arrivals').innerHTML = people.length ? `<ul class="arrivals-list">${people.map(p => `<li>
+      <button type="button" class="arrival" data-arrival="${esc(p.id)}" data-sig="${esc(p.sig)}">
+        <span class="arrival-name">${esc(p.firstName)} ${esc(p.lastName)}</span>
+        <span class="arrival-where">${esc(p.organisation || p.roleName)}</span>
+        <span class="arrival-when">${ago(p.arrivedAt)}</span>
+        <span class="arrival-go">Check in and print</span>
+      </button>
+      <button type="button" class="link-button arrival-dismiss" data-dismiss="${esc(p.id)}">Not here</button></li>`).join('')}</ul>`
+    : '<p class="muted">Nobody waiting yet.</p>';
+}
+$('#arrivals').addEventListener('click', async e => {
+  const go = e.target.closest('[data-arrival]'), dismiss = e.target.closest('[data-dismiss]');
+  if(go){ go.disabled = true; await checkIn(go.dataset.arrival, go.dataset.sig); loadArrivals(); }
+  if(dismiss){ await fetch('/api/arrivals', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ id: dismiss.dataset.dismiss }) }); loadArrivals(); }
+});
+
 loadBookings();
+loadArrivals();
 setInterval(loadBookings, 60000);
+setInterval(loadArrivals, 4000);

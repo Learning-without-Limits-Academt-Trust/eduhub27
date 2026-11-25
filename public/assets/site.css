@@ -823,3 +823,17 @@ body.immersive .find-lede{color:#d9f3f0;font-size:1.1rem;margin:0 0 24px}
   body[data-badge="105mm148mm"] .badge-first{font-size:40pt}
   body[data-badge="105mm148mm"] .badge-sessions{font-size:10pt}
 }
+/* Arriving now */
+.arrivals-panel h2{margin:0 0 4px}
+.arrivals-count{color:var(--teal)}
+.arrivals-list{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:10px}
+.arrivals-list li{display:flex;align-items:center;gap:12px}
+.arrival{all:unset;box-sizing:border-box;flex:1;cursor:pointer;display:grid;grid-template-columns:1fr auto;gap:2px 16px;padding:14px 18px;border-radius:14px;background:#eef7f6;border:2px solid var(--teal)}
+.arrival:hover,.arrival:focus-visible{background:#dff3f1;outline:3px solid var(--yellow)}
+.arrival[disabled]{opacity:.6;cursor:wait}
+.arrival-name{font-size:1.35rem;font-weight:800}
+.arrival-where{color:#455a5d;grid-column:1}
+.arrival-when{color:#617579;font-size:.85rem;grid-column:2;grid-row:1;text-align:right}
+.arrival-go{grid-column:2;grid-row:2;font-weight:800;color:var(--teal);text-align:right}
+.arrival-dismiss{font-size:.9rem}
+.arrived-note{margin:12px 0}

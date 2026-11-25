@@ -1,5 +1,15 @@
 # Changelog
 
+## Version 6.4: arriving now
+
+### New
+- **Welcome QR and "Arriving now".** The poster is now a welcome poster for everyone: "Welcome! Scan to sign in". People scan it on arrival and enter their surname and booking email address. Their name then appears within a few seconds under **Arriving now** at the top of the check-in desk, with their school and how long ago they arrived. One click checks them in and prints their badge. "Not here" removes a name. Names drop off once checked in, or after four hours.
+- After signing in, the person's phone shows their ticket with "Thank you, the registration desk can see you have arrived. Please go to the desk to collect your name badge."
+- The arrivals list is for signed-in administrators only (`/api/arrivals`).
+
+### Changed
+- The sign-in page reads "Welcome! Sign in", with a **Sign in** button.
+
 ## Version 6.3: registration on the day
 
 ### New

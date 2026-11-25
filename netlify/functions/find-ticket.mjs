@@ -9,6 +9,7 @@ import { json, readJSON, updateJSON, clientIp, clean, EDUHUB_ID, bookingStatusOf
 import { ticketUrl } from "./_tickets.mjs";
 
 const WINDOW = 15 * 60 * 1000, MAX_FAILURES = 40;
+export const ARRIVAL_KEEP = 4 * 60 * 60 * 1000; // arrivals drop off the desk screen after four hours
 const key = ip => crypto.createHash("sha256").update("find:" + ip).digest("hex").slice(0, 24);
 const same = (a, b) => String(a || "").trim().toLowerCase().replace(/\s+/g, " ") === String(b || "").trim().toLowerCase().replace(/\s+/g, " ");
 const NOT_FOUND = "We could not find a booking with that surname and email address. Please check them, or ask at the registration desk.";
@@ -37,5 +38,15 @@ export default async request => {
   if(!b){ await failures(ip, true); return json({ error: NOT_FOUND }, 404); }
   const url = ticketUrl("", b.id);
   if(!url) return json({ error: "Tickets are not available at the moment. Please ask at the registration desk." }, 503);
-  return json({ ok: true, ticketPath: url });
+  // Let the registration desk know this person has arrived, so their name is
+  // waiting on the desk screen before they reach it.
+  if(bookingStatusOf(b) === "booked" && !b.checkedInAt){
+    await updateJSON("arrivals", {}, list => {
+      const now = Date.now();
+      for(const [id, t] of Object.entries(list)) if(now - t > ARRIVAL_KEEP) delete list[id];
+      list[b.id] = now;
+      return { value: list, result: null };
+    }).catch(() => {});
+  }
+  return json({ ok: true, ticketPath: url + "&arrived=1" });
 };

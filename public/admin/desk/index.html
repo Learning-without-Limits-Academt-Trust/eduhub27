@@ -21,6 +21,12 @@
 
   <div id="desk-signin" class="notice error hidden">Please <a href="/admin/">sign in to admin</a> on this device first, then come back to this page.</div>
 
+  <section class="panel desk-panel arrivals-panel" id="arrivals-panel">
+    <h2>Arriving now <span class="arrivals-count" id="arrivals-count"></span></h2>
+    <p class="muted small">People appear here as soon as they scan the welcome QR code and enter their details. Click a name to check them in and print their badge.</p>
+    <div id="arrivals" aria-live="polite"><p class="muted">Nobody waiting yet.</p></div>
+  </section>
+
   <section class="panel desk-panel" id="desk-main">
     <form id="scan-form" class="desk-scan" autocomplete="off">
       <label for="scan">Scan a ticket</label>

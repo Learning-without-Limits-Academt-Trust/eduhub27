@@ -38,6 +38,7 @@ function renderTicket(t){
       <p class="ticket-hint">Please show this code at registration. You can also print this page.</p>`
       : t.status === 'waiting' ? '<p class="notice warn">You are on the waiting list. We will email you a ticket if a place becomes available.</p>'
       : '<p class="notice error">This booking has been cancelled.</p>'}
+    ${confirmed && !t.isAdmin && params.get('arrived') === '1' ? '<p class="notice arrived-note"><strong>Thank you, the registration desk can see you have arrived.</strong> Please go to the desk to collect your name badge.</p>' : ''}
     ${details(t)}
     ${confirmed && !t.isAdmin ? '<button class="button secondary" type="button" id="print-ticket">Print ticket</button>' : ''}`;
   $('#print-ticket')?.addEventListener('click', () => window.print());

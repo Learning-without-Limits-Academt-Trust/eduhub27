@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;600;700;900&family=Inter:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+/* A5 portrait, 148 x 210 mm. The page itself is transparent: only the cards are filled. */
+@page{size:148mm 210mm;margin:0}
+*{box-sizing:border-box;margin:0}
+html,body{width:148mm;height:210mm;background:transparent}
+body{font-family:"Source Sans 3",Arial,sans-serif;color:#1F1F1F;padding:5mm;display:flex;flex-direction:column;gap:3mm;
+  -webkit-print-color-adjust:exact;print-color-adjust:exact}
+:root{--mission:#098F88;--dark:#00706A;--deep:#00524E;--teal:#009189;--purple:#6F2789;--orange:#F5BA19;--lgreen:#ACCE33;--red:#CE153F;--grey:#636466;--tint:#E6F4F3;--ptint:#F4ECF8}
+.card{background:#fff;border-radius:5mm;box-shadow:0 2mm 5mm rgba(0,40,38,.22);position:relative}
+.dots{display:flex;gap:1.6mm}.dots i{width:2.4mm;height:2.4mm;border-radius:50%;background:var(--red)}
+.dots i:nth-child(2){background:var(--orange)}.dots i:nth-child(3){background:var(--lgreen)}
+.pill{font-family:Inter,sans-serif;font-weight:700;font-size:6.2pt;letter-spacing:.12em;text-transform:uppercase;color:var(--dark);background:var(--tint);border-radius:99px;padding:1.2mm 3mm}
+
+/* Header */
+.head{flex:none;padding:3mm 5mm 3.4mm;background:linear-gradient(120deg,var(--mission),var(--dark) 55%,var(--deep));color:#fff;overflow:hidden}
+.head .top{display:flex;justify-content:space-between;align-items:center}
+.head .pill{background:rgba(255,255,255,.14);color:#e7f7f5;border:.3mm solid rgba(255,255,255,.25)}
+.head-row{display:flex;align-items:center;gap:4mm;margin-top:1.6mm}
+.logo-win{background:#fff;border-radius:3.4mm;padding:2.2mm 3mm;flex:none;transform:rotate(-2.5deg);box-shadow:0 1.5mm 4mm rgba(0,0,0,.25)}
+.logo-win img{display:block;height:12mm;width:auto}
+.head h1{font-size:19pt;font-weight:900;line-height:.95;letter-spacing:-.02em}
+.head h1 span{background:linear-gradient(90deg,var(--lgreen),var(--orange));-webkit-background-clip:text;background-clip:text;color:transparent}
+.head p{font-size:8.5pt;color:#d9f3f0;margin-top:1.4mm;font-weight:600}
+
+/* Timeline */
+.tl{padding:3mm 4mm 3mm;flex:1;min-height:0;display:flex;flex-direction:column}
+.tl .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.8mm}
+.grid{display:grid;grid-template-columns:13mm 1fr 1fr;column-gap:2mm;row-gap:1mm;flex:1;align-content:space-evenly}
+.colhead{border-radius:2.6mm;padding:1.5mm 2.4mm;color:#fff}
+.colhead b{display:block;font-size:9.5pt;font-weight:900;line-height:1.05;letter-spacing:.01em}
+.colhead small{display:block;font-size:6.4pt;opacity:.92;line-height:1.2;margin-top:.6mm}
+.colhead.a{background:var(--teal)}.colhead.b{background:var(--purple)}
+.colhead .tag{display:inline-block;font-family:Inter,sans-serif;font-weight:800;font-size:6pt;letter-spacing:.1em;background:rgba(255,255,255,.22);border-radius:99px;padding:.3mm 1.8mm;margin-bottom:.8mm}
+.time{font-weight:900;font-size:9.5pt;line-height:1;padding-top:1.2mm;font-variant-numeric:tabular-nums;color:var(--deep)}
+.time small{display:block;font-weight:600;font-size:6.2pt;color:var(--grey);margin-top:.5mm}
+.cell{border-left:1.1mm solid #cfdedd;border-radius:1.4mm;background:#F2F7F7;padding:.9mm 2.2mm 1mm;min-height:6.8mm;display:flex;flex-direction:column;justify-content:center}
+.cell.span{grid-column:2 / 4}
+.cell b{font-size:8.2pt;font-weight:700;line-height:1.15}
+.cell small{font-size:6.3pt;color:var(--grey);line-height:1.2}
+.cell .k{font-family:Inter,sans-serif;font-size:5.6pt;font-weight:800;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.3mm}
+.arrival{border-left-color:var(--lgreen)}.arrival .k{color:#5d6a00}
+.keynote{border-left-color:var(--teal)}.keynote .k{color:var(--teal)}
+.brk,.lunch{border-left-color:var(--orange)}.brk .k,.lunch .k{color:#8a6100}
+.workshop{border-left-color:var(--purple);background:var(--ptint)}.workshop .k{color:var(--purple)}
+.awards{border-left-color:#c98a1a;background:#FBF4E4}.awards .k{color:#8a5a00}
+/* Each half of a split row is marked with its timeline's colour. */
+.in-a{box-shadow:inset 0 .6mm 0 var(--teal)}.in-b{box-shadow:inset 0 .6mm 0 var(--purple)}
+
+.foot{flex:none;padding:2.4mm 4mm;display:flex;gap:3mm;align-items:center;font-size:6.8pt;line-height:1.3;color:#1F1F1F}
+.foot .ic{flex:none;width:7mm;height:7mm;border-radius:2mm;display:grid;place-items:center;background:linear-gradient(135deg,#d6519b,var(--purple))}
+.foot strong{color:var(--deep)}
+</style></head>
+<body>
+
+<section class="card head">
+  <div class="top"><span class="dots"><i></i><i></i><i></i></span><span class="pill">Tuesday 5 January 2027</span></div>
+  <div class="head-row">
+    <div class="logo-win"><img src="eduhub27.png" alt="EduHub 27: Better together"></div>
+    <div>
+      <h1>Your day<br><span>at EduHub</span></h1>
+      <p>Babington Academy, Leicester. 08:00 to 15:00</p>
+    </div>
+  </div>
+</section>
+
+<section class="card tl">
+  <div class="top"><span class="dots"><i></i><i></i><i></i></span><span class="pill">Structure of the day</span></div>
+  <div class="grid">
+    <div></div>
+    <div class="colhead a"><span class="tag">TIMELINE A</span><b>Primary and central</b><small>Primary school staff, central team, primary governors and trustees</small></div>
+    <div class="colhead b"><span class="tag">TIMELINE B</span><b>Secondary</b><small>Secondary school staff and secondary governors</small></div>
+
+    <div class="time">08:00<small>to 08:45</small></div>
+    <div class="cell span arrival"><span class="k">Arrival</span><b>Registration</b><small>Sports Block. Collect your badge, then tea or coffee</small></div>
+
+    <div class="time">08:45<small>to 09:00</small></div>
+    <div class="cell span"><b>Welcome from John Henrys, CEO</b><small>Sports hall</small></div>
+
+    <div class="time">09:00<small>to 10:00</small></div>
+    <div class="cell span keynote"><span class="k">Keynote</span><b>Graham Allcott</b><small>Sports hall</small></div>
+
+    <div class="time">10:00<small>to 10:30</small></div>
+    <div class="cell span brk"><span class="k">Break</span><b>Grab a drink and have a wander</b></div>
+
+    <div class="time">10:30<small>to 11:15</small></div>
+    <div class="cell in-a"><b>People Strategy launch</b><small>with John Henrys, Sports hall</small></div>
+    <div class="cell workshop in-b"><span class="k">Workshop</span><b>Session 1</b><small>Main School</small></div>
+
+    <div class="time">11:20<small>to 12:05</small></div>
+    <div class="cell workshop in-a"><span class="k">Workshop</span><b>Session 1</b><small>Main School</small></div>
+    <div class="cell in-b"><b>People Strategy launch</b><small>with John Henrys, Sports hall</small></div>
+
+    <div class="time">12:10<small>to 12:50</small></div>
+    <div class="cell workshop in-a"><span class="k">Workshop</span><b>Session 2</b><small>Main School</small></div>
+    <div class="cell lunch in-b"><span class="k">Lunch</span><b>Collect your lunch</b><small>then mingle and wander</small></div>
+
+    <div class="time">12:55<small>to 13:35</small></div>
+    <div class="cell lunch in-a"><span class="k">Lunch</span><b>Collect your lunch</b><small>then mingle and wander</small></div>
+    <div class="cell workshop in-b"><span class="k">Workshop</span><b>Session 2</b><small>Main School</small></div>
+
+    <div class="time">13:40<small>to 14:30</small></div>
+    <div class="cell span awards"><span class="k">&#9733; Awards</span><b>LwLAT Better Together Recognition Awards 2027</b><small>Sports hall</small></div>
+
+    <div class="time">14:35<small>to 14:45</small></div>
+    <div class="cell span"><b>Close from our Chair of Trustees</b><small>Sports hall</small></div>
+
+    <div class="time">14:45<small>to 14:50</small></div>
+    <div class="cell span"><b>Feedback on the day, then home</b></div>
+  </div>
+</section>
+
+<section class="card foot">
+  <span class="ic"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9h10M7 13h6"/></svg></span>
+  <p><strong>Your workshops and rooms are printed on your name badge.</strong> Governors follow the timeline for the type of school they govern. Trustees follow Timeline A.</p>
+</section>
+
+</body></html>
